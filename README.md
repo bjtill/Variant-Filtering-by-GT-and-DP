@@ -18,6 +18,8 @@ The command line options are:
 
 --max-depth: integer maximum depth 
 
+--min-called: integer minimum number of samples with non-missing genotypes (use with -a)
+
 -i: Input VCF file
 
 -s: Sample file
@@ -46,7 +48,10 @@ Filter Code Logic:
 When -m is used, homozygous alternative accepts any identical non-zero alleles (1/1, 2/2, 3/3).
 Heterozygous accepts any combination where one allele is 0.
 Missing data (./.) is accepted as neutral only when -a flag is used.
+When -a is used, at least one sample must have an informative genotype (not ./., 0/0, or 0|0)
+When --min-called is used with -a, at least that many samples must have non-missing genotypes
 
+The program only outputs variants whre ALL samples meet the criteria.  
 
 PREREQUISITES:
 
@@ -54,7 +59,7 @@ PREREQUISITES:
    
 INSTALLATION: 
 
-This program should work on all systems. Download the .cpp file and compile according to your system. For Linux Ubuntu, compile with g++ (g++ -o softmask_bed g++ -o vcf_filter VFGD_V1_5.cpp -lz). 
+This program should work on all systems. Download the .cpp file and compile according to your system. For Linux Ubuntu, compile with g++ (g++ -o vcf_filter VFGD_V1_8.cpp -lz). -lz compiles with zlib support.  
 
 TO RUN:
 
@@ -68,6 +73,10 @@ Basic filtering
 Allow missing data and multiple alleles
 
 ./vcf_filter -i input.vcf.gz -s samples.txt -a -m -o filtered.vcf
+
+Allow missing data but require at least 4 samples to have non-missing genotypes
+
+./vcf_filter -i input.vcf.gz -s samples.txt -a --min-called 4 -o filtered.vcf
 
 With depth
 
